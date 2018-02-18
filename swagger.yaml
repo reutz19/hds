@@ -1,0 +1,64 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: Health Dashboard Service API
+  description: This is a health check service for Auto Desk services.
+host: 'localhost:8080'
+basePath: /
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /statuses:
+    get:
+      description: Get health statuses of all services
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/statuses'
+        '500':
+          description: No available services
+          schema:
+            $ref: '#/definitions/error'
+  /availability:
+    get:
+      description: Get services availability (in percentage) span over the last hour
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/availability'
+        '500':
+          description: No available services
+definitions:
+  statuses:
+    description: information about all services and thier statuses
+    type: array
+    items:
+      $ref: '#/definitions/service_status'
+  service_status:
+    description: information of a single service
+    properties:
+      url:
+        type: string
+      status:
+        type: string
+  availability:
+    description: information about all services and thier availability in the passed hour
+    type: array
+    items:
+      $ref: '#/definitions/service_availability'
+  service_availability:
+    description: information of a single service
+    properties:
+      url:
+        type: string
+      available_percentage:
+        type: string
+  error:
+    description: error message
+    properties:
+      error:
+        type: string
